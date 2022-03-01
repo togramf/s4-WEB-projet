@@ -14,14 +14,22 @@
         props: {
             firstname: {type: String, required: true},
             breed: String, 
-            picture_url: {type: String, default:"https://my-best-kennel.com/pictures/default.png"}
+            picture_url: {type: String, default:"https://th.bing.com/th/id/OIP.DZLWFqYqIG4l_yJaqOuJXgHaHa?pid=ImgDet&rs=1"}
         }
     }
 </script>
 
 <style>
     .dog-card {
-        display: flex;
+        display: grid;
+        width: 150px;
+        text-align:center;
+    }
+
+    img {
+        border-radius: 10px;
+        width: 150px;
+        /* height: auto; */
     }
 
     h2 {
