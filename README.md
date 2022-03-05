@@ -1,7 +1,16 @@
 # s4-project
 
 ## Progression 
+- [x] create components
+- [x] fetch API : [Art Institute of Chicago API](http://api.artic.edu/docs/)
+- [x] display fetch 
+- [ ] see the problem with pictures on the API 
+- [ ] create automatically components from the number of artworks fetched 
 
+## Launch Project 
+```
+npm run serve
+```
 
 ## Project setup
 ```

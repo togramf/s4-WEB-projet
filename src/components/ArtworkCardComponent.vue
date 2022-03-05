@@ -1,26 +1,30 @@
 <template> 
-    <div class="dog-card">
+    <div class="artwork-card">
+        <div>
+            <h2 class="title">{{title}}</h2>
+        </div>
         <img class="picture" v-bind:src="picture_url">
         <div>
-            <h2 class="firstname">{{firstname}}</h2>
-            <p class="breed">{{breed}}</p>
+            <h3 class="artist">{{artist}}</h3>
+            <p class="date">{{date}}</p>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-    name: 'DogCard',
+    name: 'ArtworkCard',
         props: {
-            firstname: {type: String, required: true},
-            breed: String, 
+            title: {type: String, required: true},
+            artist: String,
+            date: String, 
             picture_url: {type: String, default:"https://th.bing.com/th/id/OIP.DZLWFqYqIG4l_yJaqOuJXgHaHa?pid=ImgDet&rs=1"}
         }
     }
 </script>
 
 <style>
-    .dog-card {
+    .artwork-card {
         display: grid;
         width: 150px;
         text-align:center;
@@ -29,10 +33,12 @@
     img {
         border-radius: 10px;
         width: 150px;
-        /* height: auto; */
     }
 
     h2 {
         font-size: 20px;
+    }
+    h3 {
+        font-size: 15px;
     }
 </style>
