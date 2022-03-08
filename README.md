@@ -4,8 +4,9 @@
 - [x] create components
 - [x] fetch API : [Art Institute of Chicago API](http://api.artic.edu/docs/)
 - [x] display fetch 
-- [ ] see the problem with pictures on the API 
-- [ ] create automatically components from the number of artworks fetched 
+- [x] create automatically components from the number of artworks fetched (v-for)
+- [x] see the problem with pictures on the API 
+- [x] recup the pictures of each artwork
 
 ## Launch Project 
 ```

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <ArtworksGallery />
-    <div id="home">
+    <div v-if="exist" id="home">
       <img alt="Vue logo" src="./assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js App"/>
     </div>
+    <ArtworksGallery />
   </div>
 </template>
 
@@ -31,8 +31,8 @@ export default {
   margin-top: 60px;
 }
 
-#home {
+/* #home {
   visibility: hidden;
-}
+} */
 
 </style>

@@ -3,7 +3,7 @@
         <div>
             <h2 class="title">{{title}}</h2>
         </div>
-        <img class="picture" v-bind:src="picture_url">
+        <img class="picture" v-bind:src="'https://www.artic.edu/iiif/2/' + image_id +'/full/843,/0/default.jpg'"/>
         <div>
             <h3 class="artist">{{artist}}</h3>
             <p class="date">{{date}}</p>
@@ -18,7 +18,8 @@
             title: {type: String, required: true},
             artist: String,
             date: String, 
-            picture_url: {type: String, default:"https://th.bing.com/th/id/OIP.DZLWFqYqIG4l_yJaqOuJXgHaHa?pid=ImgDet&rs=1"}
+            image_id: String,
+            // picture_url: {type: String, default:"https://th.bing.com/th/id/OIP.DZLWFqYqIG4l_yJaqOuJXgHaHa?pid=ImgDet&rs=1"}
         }
     }
 </script>
