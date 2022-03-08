@@ -7,6 +7,7 @@
 - [x] create automatically components from the number of artworks fetched (v-for)
 - [x] see the problem with pictures on the API 
 - [x] recup the pictures of each artwork
+- [ ] make the page prettier 
 
 ## Launch Project 
 ```

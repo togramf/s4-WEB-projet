@@ -19,7 +19,6 @@
             artist: String,
             date: String, 
             image_id: String,
-            // picture_url: {type: String, default:"https://th.bing.com/th/id/OIP.DZLWFqYqIG4l_yJaqOuJXgHaHa?pid=ImgDet&rs=1"}
         }
     }
 </script>
@@ -27,13 +26,17 @@
 <style>
     .artwork-card {
         display: grid;
-        width: 150px;
-        text-align:center;
+        width: 200px;
+        align-items: center;
+        background-color: rgba(221, 221, 221, 0.479);
+        border-radius: 20px;
+        margin-bottom: 20px;
     }
 
     img {
         border-radius: 10px;
-        width: 150px;
+        width: 190px;
+        margin: 5px;
     }
 
     h2 {
