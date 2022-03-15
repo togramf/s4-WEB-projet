@@ -1,17 +1,27 @@
 <template>
-  <div class="artwork-gallery">
-      <div v-for="artwork in artworksData.data" 
+    <div class="gallery">
+        <div class="gallery-options">
+            <input type="text" v-model="search" placeholder="Search for an artwork">
+            <button v-if="search" @click="cleanSearch">X</button>
+            <label for="artworks-sort"> Sort by: </label>
+            <select v-model="gallerySortType" id="artworks-sort">
+                <option value="AZtitle"> By title </option>
+                <option value="AZdate"> By date </option>
+                <option value="AZartist"> By artist </option>
+            </select>
+        </div>
+        <div class="artwork-gallery"> 
+            <div v-for="artwork in artworksData.data" 
             :key="artwork.id">
-            <ArtworkCard 
+            <ArtworkCard
             :title="artwork.title" 
             :artist="artwork.artist_display" 
             :date="artwork.date_display" 
             :image_id="artwork.image_id"
             :pictureUrl="artwork.image"/>
-        
-        </div>
-        
-  </div>
+            </div> 
+        </div> 
+    </div>
 </template>
 
 <script>
@@ -25,7 +35,9 @@
         },
         data() {
             return {
-                artworksData: []
+                artworksData: [],
+                search: "",
+                gallerySortType: "AZtitle"
             }
         },
         created: function() {
@@ -34,6 +46,9 @@
         methods: {
             async retrieveArtworksData() {
                 this.artworksData = await getArtworksData()
+            },
+            cleanSearch: function() {
+                this.search =""
             }
         }
     }
@@ -42,9 +57,29 @@
 </script>
 
 <style>
+.gallery-options{
+    margin: 2%;
+    font-weight: 600;
+    color: #888888;
+}
 .artwork-gallery{
     display: flex;
     flex-flow: wrap;
     justify-content: space-around;
+}
+
+input[type="text"] {
+    width: fit-content; 
+    background-color: rgba(221, 221, 221, 0.479);
+    padding: 10px;
+    border: 2px solid #888888;
+    border-radius: 5%;
+}
+
+button {
+    font-weight: 600;
+    color: #888888;
+    border: 2px solid #888888;
+    border-radius: 30%;
 }
 </style>

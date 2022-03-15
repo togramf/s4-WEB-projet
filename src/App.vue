@@ -4,8 +4,8 @@
       <img class="logo" alt="APIC logo" src="http://api.artic.edu/docs/assets/logo.svg"/>
       <h2 class="page-title"> Chicago Art Institute virtual gallery</h2>
     </div>
-    <div v-if="exist" id="home">
-      <img alt="Vue logo" src="./assets/logo.png">
+    <div id="home">
+      <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
       <HelloWorld msg="Welcome to Your Vue.js App"/>
     </div>
     <ArtworksGallery />
