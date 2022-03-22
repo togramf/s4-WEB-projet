@@ -11,7 +11,7 @@
             </select>
         </div>
         <div class="artwork-gallery"> 
-            <div v-for="artwork in artworksData.data" 
+            <div v-for="artwork in artworksOrganizedData" 
             :key="artwork.id">
             <ArtworkCard
             :title="artwork.title" 
@@ -32,6 +32,25 @@
         name: 'ArtworksGallery',
         components: {
             ArtworkCard
+        },
+        computed:{ 
+            artworksOrganizedData: function(){
+                let field = "date_display"
+                let filterFunc = (a) => a.date_display.toLowerCase().includes(this.search.toLowerCase())
+
+                if (this.gallerySortType == "AZtitle") {
+                    field = "title"
+                    filterFunc = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
+                } else {
+                    field = "artist_display"
+                    filterFunc = (a) => a.artist_display.toLowerCase().includes(this.search.toLowerCase())
+                }
+                const comparator = (a,b) => a[field].localeCompare(b[field])
+                let organizedData = this.artworksData.data
+                organizedData = organizedData.filter(filterFunc)
+                organizedData = organizedData.sort(comparator)
+                return organizedData
+            }
         },
         data() {
             return {
