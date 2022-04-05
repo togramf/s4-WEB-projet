@@ -36,17 +36,17 @@
         computed:{ 
             artworksOrganizedData: function(){
                 let field = "date_display"
-                let filterFunc = (a) => a.date_display.toLowerCase().includes(this.search.toLowerCase())
+                let filterFunc = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
 
                 if (this.gallerySortType == "AZtitle") {
                     field = "title"
                     filterFunc = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
-                } else {
+                } else if (this.gallerySortType == "AZartist") {
                     field = "artist_display"
                     filterFunc = (a) => a.artist_display.toLowerCase().includes(this.search.toLowerCase())
                 }
                 const comparator = (a,b) => a[field].localeCompare(b[field])
-                let organizedData = this.artworksData.data
+                let organizedData = this.artworksData
                 organizedData = organizedData.filter(filterFunc)
                 organizedData = organizedData.sort(comparator)
                 return organizedData
