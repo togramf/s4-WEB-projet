@@ -1,14 +1,17 @@
 <template>
   <div id="app">
-    <div id="header">
+    <header>
       <img class="logo" alt="APIC logo" src="http://api.artic.edu/docs/assets/logo.svg"/>
       <h2 class="page-title"> Chicago Art Institute virtual gallery</h2>
-    </div>
+    </header>
     <div id="home">
       <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
       <HelloWorld msg="Welcome to Your Vue.js App"/>
     </div>
     <ArtworksGallery />
+    <footer>
+      <div class="page-title"> Web project - IMAC 2 - 2021-2022 - Margot Fauchon </div>
+    </footer>
   </div>
 </template>
 
@@ -34,12 +37,19 @@ export default {
     color: #313131;
   }
 
-  #header {
+  header, footer {
     background-color: #b10f0f;
     display: flex;
+  }
+
+  header {
     flex-direction: row;
     align-items: center;
     margin-bottom: 20px;
+  }
+
+  footer {
+    margin-top: 20px;
   }
 
   .logo {

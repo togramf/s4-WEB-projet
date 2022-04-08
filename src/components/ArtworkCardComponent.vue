@@ -33,6 +33,10 @@
         margin-bottom: 20px;
     }
 
+    .artwork-card:hover {
+        box-shadow: 2px 2px 10px lightgrey;
+    }
+
     img {
         border-radius: 10px;
         width: 190px;

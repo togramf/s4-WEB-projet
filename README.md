@@ -9,7 +9,13 @@
 - [x] recup the pictures of each artwork
 - [x] make the page prettier 
 - [x] add a search bar
-- [ ] sort the data from the API
+- [ ] sort the data from the API : separate 'search' and 'sort'
+- [x] change request ideas : change 'page'
+
+[Arrow idea 1](https://codepen.io/xzf/pen/BvGLjL)
+[Arrow idea 2](https://codepen.io/shawnlooi/pen/eeXmrQ)
+[Arrow idea 3](https://codepen.io/cbrst/pen/ebxwLJ)
+[Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW)
 
 ## Launch Project 
 ```

@@ -2,13 +2,14 @@
     <div class="gallery">
         <div class="gallery-options">
             <input type="text" v-model="search" placeholder="Search for an artwork">
-            <button v-if="search" @click="cleanSearch">X</button>
+            <button id="reset_search_button" v-if="search" @click="cleanSearch">X</button>
             <label for="artworks-sort"> Sort by: </label>
             <select v-model="gallerySortType" id="artworks-sort">
                 <option value="AZtitle"> By title </option>
                 <option value="AZdate"> By date </option>
                 <option value="AZartist"> By artist </option>
             </select>
+            
         </div>
         <div class="artwork-gallery"> 
             <div v-for="artwork in artworksOrganizedData" 
@@ -21,6 +22,11 @@
             :pictureUrl="artwork.image"/>
             </div> 
         </div> 
+        <div v-if="!search" class="gallery-footer">
+            <button v-if="page>1" @click="changePage(-1)"> Precedent Page </button>
+            <div id="display_current_page"/>
+            <button @click="changePage(1)"> Next Page </button>
+        </div>
     </div>
 </template>
 
@@ -56,18 +62,26 @@
             return {
                 artworksData: [],
                 search: "",
-                gallerySortType: "AZtitle"
+                gallerySortType: "AZtitle",
+                page: 1
             }
         },
         created: function() {
-            this.retrieveArtworksData()
+            this.retrieveArtworksData(this.page)
         },
         methods: {
-            async retrieveArtworksData() {
-                this.artworksData = await getArtworksData()
+            async retrieveArtworksData(page) {
+                this.artworksData = await getArtworksData(page)
             },
             cleanSearch: function() {
                 this.search =""
+            },
+            changePage: function(sens) {
+                this.page += sens
+                this.retrieveArtworksData(this.page)
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
+                document.getElementById("display_current_page").innerHTML = "Page "+this.page
             }
         }
     }
@@ -76,14 +90,21 @@
 </script>
 
 <style>
-.gallery-options{
+.gallery-options {
     margin: 2%;
     font-weight: 600;
     color: #888888;
 }
-.artwork-gallery{
+
+.artwork-gallery {
     display: flex;
     flex-flow: wrap;
+    justify-content: space-around;
+}
+
+.gallery-footer {
+    display: flex;
+    flex-flow: row;
     justify-content: space-around;
 }
 
@@ -95,10 +116,11 @@ input[type="text"] {
     border-radius: 5%;
 }
 
-button {
+#reset_search_button {
     font-weight: 600;
     color: #888888;
     border: 2px solid #888888;
     border-radius: 30%;
 }
+
 </style>
