@@ -49,7 +49,9 @@ export default {
   }
 
   footer {
+    height: 10vh;
     margin-top: 20px;
+    text-align:center ;
   }
 
   .logo {
@@ -61,7 +63,7 @@ export default {
 
   .page-title {
     color: aliceblue;
-    width: 90%;
+    width: 100%;
     text-align: center;
   }
 
