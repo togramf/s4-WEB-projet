@@ -3,23 +3,23 @@
         <div class="gallery-options">
             <input type="text" v-model="search" placeholder="Search for an artwork or an artist">
             <button id="reset_search_button" v-if="search" @click="cleanSearch">X</button>
-            <label for="artworks-sort"> Sort by: </label>
-            <select v-model="gallerySortType" id="artworks-sort">
-                <option value="title"> By title </option>
-                <option value="date_display"> By date </option>
-                <option value="artist_display"> By artist </option>
-            </select>
+            <label for="artworks-sort"> Sort by: 
+                <select v-model="gallerySortType" id="artworks-sort">
+                    <option value="title"> By title </option>
+                    <option value="date_display"> By date </option>
+                    <option value="artist_display"> By artist </option>
+                </select>
+            </label>
+            <label> Number of artworks to display: 
+                <input id="input_nb_artworks" type="number" value="40" min="10" max="100" step="5" @change="changeNumberArtworks">
+            </label>
             <div v-if="!search" class = "artworks-type-filters"> 
-                <label><input type="checkbox" v-model="user.type_1.state" >Painting</label>
-                <label><input type="checkbox" v-model="user.type_2.state" >Photograph</label>
-                <label><input type="checkbox" v-model="user.type_3.state" >Sculpture</label>
-                <label><input type="checkbox" v-model="user.type_5.state" >Textile</label>
-                <label><input type="checkbox" v-model="user.type_7.state" >Mask</label>
-                <label><input type="checkbox" v-model="user.type_14.state" >Drawing and Watercolor</label>
-                <label><input type="checkbox" v-model="user.type_15.state" >Mixed Media</label>
-                <label><input type="checkbox" v-model="user.type_18.state" >Print</label>
-                <label><input type="checkbox" v-model="user.type_24.state" >Ritual object</label>
-                <button @click="cleanCheckboxes"> Uncheck All </button>
+                <div id="checkboxes_list" >
+                    <label v-for='artwork_type in this.artworkTypesData' :key="artwork_type.type_title"><input type="checkbox" v-model="artwork_type.state" >{{artwork_type.type_title}}</label>
+                </div>
+                <button id="uncheck_button" @click="cleanCheckboxes"> Uncheck All </button>
+                <button id="print_types" @click="printCheckboxes"> Print State </button>
+                
             </div>
             
         </div>
@@ -57,25 +57,26 @@
                 const field = this.gallerySortType 
                 let organizedData = this.artworksData
 
-                let type_id_list = []
-                for (let type in this.user) {
-                    if (this.user[type].state) 
-                        type_id_list.push(this.user[type].type_id);
+                let type_title_list = []
+                for (let artwork_type in this.artworkTypesData) {
+                    if (this.artworkTypesData[artwork_type].state == true) {
+                        type_title_list.push(this.artworkTypesData[artwork_type].type_title);
+                    }    
                 }
 
                 const search = this.search.length > 0 ? true : false
-                const checkbox = type_id_list.length>0 ? true : false 
+                const checkbox = type_title_list.length > 0 ? true : false 
 
                 const searchFuncTitle = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
                 const searchFuncArtist = (a) => a.artist_display.toLowerCase().includes(this.search.toLowerCase())
-                const filterFuncType = (a) => type_id_list.includes(a.artwork_type_id)
+                const filterFuncType = (a) => type_title_list.includes(a.artwork_type_title)
 
                 const comparator = (field == "date_display")? (a,b) => {return a.date_start - b.date_start} : (a,b) => a[field].localeCompare(b[field])
                 
                 if (search)
                     organizedData = organizedData.filter(searchFuncTitle || searchFuncArtist)
                 
-                if (checkbox)
+                if (checkbox) 
                     organizedData = organizedData.filter(filterFuncType)
 
                 organizedData = organizedData.sort(comparator)
@@ -85,66 +86,73 @@
         data() {
             return {
                 artworksData: [],
+                artworkTypesData: {},
                 search: "",
                 gallerySortType: "title",
                 page: 1,
-                user : {
-                    type_1: {
-                        type_id: 1, state : false
-                    }, 
-                    type_2: {
-                        type_id: 2, state : false
-                    }, 
-                    type_3: {
-                        type_id: 3, state : false
-                    }, 
-                    type_5: {
-                        type_id: 5, state : false
-                    }, 
-                    type_7: {
-                        type_id: 7, state : false
-                    }, 
-                    type_14: {
-                        type_id: 14, state : false
-                    }, 
-                    type_15: {
-                        type_id: 15, state : false
-                    },
-                    type_18: {
-                        type_id: 18, state : false
-                    }, 
-                    type_24: {
-                        type_id: 24, state : false
-                    },  
-                }
+                numberArtworks: 40
             }
         },
         created: function() {
-            this.retrieveArtworksData(this.page)
+            this.retrieveArtworksData(this.page, this.numberArtworks)
         },
         methods: {
-            async retrieveArtworksData(page) {
-                this.artworksData = await getArtworksData(page)
+            async retrieveArtworksData(page, nb_Artworks) {
+                this.artworksData = await getArtworksData(page, nb_Artworks)
+                this.updateArtworkTypesData()
+            },
+            updateArtworkTypesData: function() {
+                this.artworkTypesData = {}
+                
+                for (let index=0; index<this.numberArtworks; index++){
+                    let type_id = this.artworksData[index].artwork_type_id
+                    let type_is_in_list = false
+                    for (let type in this.artworkTypesData){
+                        if (type == type_id)
+                            type_is_in_list = true
+                    }
+
+                    if (!type_is_in_list)
+                        this.artworkTypesData[type_id]=({type_title: this.artworksData[index].artwork_type_title, state: false})
+                }
             },
             cleanSearch: function() {
                 this.search =""
             },
+            changeNumberArtworks: function(){
+                // this.numberArtworks = localStorage.setItem("numberArtworks", document.getElementById("input_nb_artworks").value) 
+                this.numberArtworks = document.getElementById("input_nb_artworks").value
+                this.retrieveArtworksData(this.page, this.numberArtworks)
+            },
             changePage: function(sens) {
                 this.page += sens
-                this.retrieveArtworksData(this.page)
+                this.retrieveArtworksData(this.page, this.numberArtworks)
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.getElementById("display_current_page").innerHTML = "Page "+this.page
             },
             cleanCheckboxes: function() {
-                for (let type in this.user) {
-                    this.user[type].state = false;
+                for (let type in this.artworkTypesData) {
+                    this.artworkTypesData[type].state = false;
                 }
             },
-            filterFuncType: function() {
-                
+            printCheckboxes: function(){
+                console.log(this.artworkTypesData)
+                for (let artwork_type in this.artworkTypesData) {
+                    // console.log(artwork_type)
+                    if (this.artworkTypesData[artwork_type].state == true) {
+                        console.log(artwork_type);
+                    }    
+                }
             }
+                
+        
         }
+        // watch: {
+        //     numberArtworks: function(newNumber) {
+        //         localStorage.setItem("numberArtworks", newNumber)
+        //     }
+        // }
     }
 
     
@@ -186,6 +194,13 @@ input[type="text"] {
     width: fit-content; 
     background-color: rgba(221, 221, 221, 0.479);
     padding: 10px;
+    border: 2px solid #888888;
+    border-radius: 5%;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+    background-color: rgba(221, 221, 221, 0.479);
     border: 2px solid #888888;
     border-radius: 5%;
 }
