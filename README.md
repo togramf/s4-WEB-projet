@@ -9,13 +9,20 @@
 - [x] recup the pictures of each artwork
 - [x] make the page prettier 
 - [x] add a search bar
-- [ ] sort the data from the API : separate 'search' and 'sort'
-- [x] change request ideas : change 'page'
+- [x] sort the data from the API : separate 'search' and 'sort'
+- [x] change request ideas: change 'page'
+- [x] filter by types of artwork (checkboxes)
+- [ ] clean and separate the code 
 
-[Arrow idea 1](https://codepen.io/xzf/pen/BvGLjL)
-[Arrow idea 2](https://codepen.io/shawnlooi/pen/eeXmrQ)
-[Arrow idea 3](https://codepen.io/cbrst/pen/ebxwLJ)
-[Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW)
+## In Addition 
+- [ ] correct buttons to 'change page': arrows ? 
+- [ ] more information about artworks on click ? 
+- [ ] correct footer 
+
+[Arrow idea 1](https://codepen.io/xzf/pen/BvGLjL) ;
+[Arrow idea 2](https://codepen.io/shawnlooi/pen/eeXmrQ) ;
+[Arrow idea 3](https://codepen.io/cbrst/pen/ebxwLJ) ;
+[Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW) ;
 
 ## Launch Project 
 ```

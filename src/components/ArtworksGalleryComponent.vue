@@ -1,6 +1,14 @@
 <template>
     <div class="gallery">
         <div class="gallery-options">
+            <div v-if="!search" class = "artworks-type-filters"> 
+                <div id="checkboxes_list" >
+                    <label v-for='artwork_type in this.artworkTypesData' :key="artwork_type.type_title">
+                        <input type="checkbox" v-model="artwork_type.state" >{{artwork_type.type_title}}
+                    </label>
+                </div>
+                <button id="uncheck_button" @click="cleanCheckboxes"> Uncheck All </button>
+            </div>
             <input type="text" v-model="search" placeholder="Search for an artwork or an artist">
             <button id="reset_search_button" v-if="search" @click="cleanSearch">X</button>
             <label for="artworks-sort"> Sort by: 
@@ -13,15 +21,6 @@
             <label> Number of artworks to display: 
                 <input id="input_nb_artworks" type="number" value="40" min="10" max="100" step="5" @change="changeNumberArtworks">
             </label>
-            <div v-if="!search" class = "artworks-type-filters"> 
-                <div id="checkboxes_list" >
-                    <label v-for='artwork_type in this.artworkTypesData' :key="artwork_type.type_title"><input type="checkbox" v-model="artwork_type.state" >{{artwork_type.type_title}}</label>
-                </div>
-                <button id="uncheck_button" @click="cleanCheckboxes"> Uncheck All </button>
-                <button id="print_types" @click="printCheckboxes"> Print State </button>
-                
-            </div>
-            
         </div>
         <div class="artwork-gallery"> 
             <div v-for="artwork in artworksOrganizedData" :key="artwork.id">
@@ -58,11 +57,10 @@
                 let organizedData = this.artworksData
 
                 let type_title_list = []
-                for (let artwork_type in this.artworkTypesData) {
-                    if (this.artworkTypesData[artwork_type].state == true) {
-                        type_title_list.push(this.artworkTypesData[artwork_type].type_title);
-                    }    
-                }
+                this.artworkTypesData.forEach(artwork_type => {
+                    if (artwork_type.state == true)
+                        type_title_list.push(artwork_type.type_title); 
+                });
 
                 const search = this.search.length > 0 ? true : false
                 const checkbox = type_title_list.length > 0 ? true : false 
@@ -86,7 +84,7 @@
         data() {
             return {
                 artworksData: [],
-                artworkTypesData: {},
+                artworkTypesData: [],
                 search: "",
                 gallerySortType: "title",
                 page: 1,
@@ -102,18 +100,16 @@
                 this.updateArtworkTypesData()
             },
             updateArtworkTypesData: function() {
-                this.artworkTypesData = {}
+                this.artworkTypesData = []
+                let artworkTypesId = []
                 
                 for (let index=0; index<this.numberArtworks; index++){
-                    let type_id = this.artworksData[index].artwork_type_id
-                    let type_is_in_list = false
-                    for (let type in this.artworkTypesData){
-                        if (type == type_id)
-                            type_is_in_list = true
-                    }
+                    let type_id = this.artworksData[index].artwork_type_id           
 
-                    if (!type_is_in_list)
-                        this.artworkTypesData[type_id]=({type_title: this.artworksData[index].artwork_type_title, state: false})
+                    if (!artworkTypesId.includes(type_id)){
+                        this.artworkTypesData.push({type_id: type_id, type_title: this.artworksData[index].artwork_type_title, state: false})
+                        artworkTypesId.push(type_id)
+                    }
                 }
             },
             cleanSearch: function() {
@@ -135,18 +131,7 @@
                 for (let type in this.artworkTypesData) {
                     this.artworkTypesData[type].state = false;
                 }
-            },
-            printCheckboxes: function(){
-                console.log(this.artworkTypesData)
-                for (let artwork_type in this.artworkTypesData) {
-                    // console.log(artwork_type)
-                    if (this.artworkTypesData[artwork_type].state == true) {
-                        console.log(artwork_type);
-                    }    
-                }
-            }
-                
-        
+            }           
         }
         // watch: {
         //     numberArtworks: function(newNumber) {
@@ -161,7 +146,7 @@
 <style>
 .gallery-options {
     display: flex;
-    flex-flow: row;
+    flex-wrap: wrap;
     align-content: stretch;
     justify-content: space-around;
     align-items: center;
@@ -171,10 +156,23 @@
 }
 
 .artworks-type-filters {
+    background-color: rgba(221, 221, 221, 0.479);
+    border: 2px solid #888888;
+    padding: .5vw;
+    margin: .5vw;
     font-weight: 400;
     display: flex;
     flex-flow: column;
     justify-content:space-evenly;
+    align-items: flex-start;
+}
+
+#checkboxes_list {
+    max-height: 10vh;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     align-items: flex-start;
 }
 
