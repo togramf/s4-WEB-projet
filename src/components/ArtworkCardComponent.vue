@@ -6,7 +6,7 @@
         <img class="picture" v-bind:src="'https://www.artic.edu/iiif/2/' + image_id +'/full/843,/0/default.jpg'"/>
         <div>
             <h3 class="artist">{{artist}}</h3>
-            <p class="date">{{date}} - {{artwork_type}} - {{artwork_type_id}}</p>
+            <p class="date">{{date}}</p>
         </div>
     </div>
 </template>
@@ -18,9 +18,7 @@
             title: {type: String, required: true},
             artist: String,
             date: String, 
-            image_id: String,
-            artwork_type: String,
-            artwork_type_id: Number
+            image_id: String
         }
     }
 </script>

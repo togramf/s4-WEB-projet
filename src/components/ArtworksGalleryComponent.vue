@@ -9,28 +9,20 @@
                 </div>
                 <button id="uncheck_button" @click="cleanCheckboxes"> Uncheck All </button>
             </div>
-            <input type="text" v-model="search" placeholder="Search for an artwork or an artist">
-            <button id="reset_search_button" v-if="search" @click="cleanSearch">X</button>
-            <label for="artworks-sort"> Sort by: 
-                <select v-model="gallerySortType" id="artworks-sort">
-                    <option value="title"> By title </option>
-                    <option value="date_display"> By date </option>
-                    <option value="artist_display"> By artist </option>
-                </select>
-            </label>
+            <SortingOptions :gallerySortType.sync="gallerySortType"/>
+            <SearchBar :search.sync="search"/>
             <label> Number of artworks to display: 
                 <input id="input_nb_artworks" type="number" value="40" min="10" max="100" step="5" @change="changeNumberArtworks">
             </label>
+            
         </div>
         <div class="artwork-gallery"> 
-            <div v-for="artwork in artworksOrganizedData" :key="artwork.id">
+            <div v-for="artwork in artworksOrganizedData" :key="artwork.id" @click="moreInformation(artwork.id)">
             <ArtworkCard
             :title="artwork.title" 
             :artist="artwork.artist_display" 
             :date="artwork.date_display" 
             :image_id="artwork.image_id"
-            :artwork_type="artwork.artwork_type_title"
-            :artwork_type_id="artwork.artwork_type_id"
             :pictureUrl="artwork.image"/>
             </div> 
         </div> 
@@ -45,11 +37,15 @@
 <script>
     import ArtworkCard from './ArtworkCardComponent.vue'
     import getArtworksData from '@/services/api/articAPI.js'
+    import SearchBar from './SearchbarComponent.vue'
+    import SortingOptions from './SortingOptionsComponent.vue'
 
     export default {
         name: 'ArtworksGallery',
         components: {
-            ArtworkCard
+            ArtworkCard,
+            SearchBar,
+            SortingOptions
         },
         computed:{ 
             artworksOrganizedData: function(){
@@ -61,7 +57,7 @@
                     if (artwork_type.state == true)
                         type_title_list.push(artwork_type.type_title); 
                 });
-
+                
                 const search = this.search.length > 0 ? true : false
                 const checkbox = type_title_list.length > 0 ? true : false 
 
@@ -112,9 +108,6 @@
                     }
                 }
             },
-            cleanSearch: function() {
-                this.search =""
-            },
             changeNumberArtworks: function(){
                 // this.numberArtworks = localStorage.setItem("numberArtworks", document.getElementById("input_nb_artworks").value) 
                 this.numberArtworks = document.getElementById("input_nb_artworks").value
@@ -131,7 +124,14 @@
                 for (let type in this.artworkTypesData) {
                     this.artworkTypesData[type].state = false;
                 }
-            }           
+            },
+            async moreInformation(artwork_id)  {
+                const artworkData = await getArtworksData(artwork_id, 1)
+                console.log(artworkData)
+            }, 
+            print: function (value){
+                console.log(value)
+            }         
         }
         // watch: {
         //     numberArtworks: function(newNumber) {
@@ -203,11 +203,11 @@ input[type=number]::-webkit-inner-spin-button {
     border-radius: 5%;
 }
 
-#reset_search_button {
+/* #reset_search_button {
     font-weight: 600;
     color: #888888;
     border: 2px solid #888888;
     border-radius: 30%;
-}
+} */
 
 </style>

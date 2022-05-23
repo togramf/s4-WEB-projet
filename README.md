@@ -13,6 +13,15 @@
 - [x] change request ideas: change 'page'
 - [x] filter by types of artwork (checkboxes)
 - [ ] clean and separate the code 
+    - [x] searchbar
+    - [x] sorting options
+    - [ ] filter buttons
+- [ ] localStorage
+    - [ ] search
+    - [ ] sort type
+    - [ ] nb_artworks 
+    - [ ] nb_page 
+
 
 ## In Addition 
 - [ ] correct buttons to 'change page': arrows ? 
@@ -23,6 +32,8 @@
 [Arrow idea 2](https://codepen.io/shawnlooi/pen/eeXmrQ) ;
 [Arrow idea 3](https://codepen.io/cbrst/pen/ebxwLJ) ;
 [Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW) ;
+
+:search.sync="search"
 
 ## Launch Project 
 ```

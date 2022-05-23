@@ -4,10 +4,6 @@
       <img class="logo" alt="APIC logo" src="http://api.artic.edu/docs/assets/logo.svg"/>
       <h2 class="page-title"> Chicago Art Institute virtual gallery</h2>
     </header>
-    <div id="home">
-      <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-      <HelloWorld msg="Welcome to Your Vue.js App"/>
-    </div>
     <ArtworksGallery />
     <footer>
       <div class="page-title"> Web project - IMAC 2 - 2021-2022 - Margot Fauchon </div>
@@ -16,13 +12,11 @@
 </template>
 
 <script>
-import HelloWorld  from './components/HelloWorld.vue'
 import ArtworksGallery from './components/ArtworksGalleryComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     ArtworksGallery
   }
 }
@@ -38,6 +32,7 @@ export default {
   }
 
   header, footer {
+    width: 100%;
     background-color: #b10f0f;
     display: flex;
   }
