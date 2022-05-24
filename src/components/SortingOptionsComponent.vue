@@ -17,6 +17,11 @@ export default {
     props: {
         gallerySortType: {type: String, required: true}
     },
+    watch: {
+        gallerySortType: function(newSortType) {
+            localStorage.setItem("gallerySortType", newSortType)
+        }
+    },
     methods: {
         emitSortType: function(event) {
             this.$emit("update:gallerySortType", event.target.value)

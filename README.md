@@ -18,11 +18,10 @@
     - [x] sorting options
     - [ ] filter buttons: problem to update the Array ArtworkTypesData
     - [x] navigation buttons 
-- [ ] storage
-    - [ ] search
-    - [ ] sort type
-    - [ ] nb_artworks 
-    - [ ] nb_page 
+- [x] storage
+    - [x] search -> local
+    - [x] sort type -> local
+    - [x] nb artworks -> local
 
 
 ## In Addition 
@@ -39,7 +38,7 @@
 
 ## Naming consistency
 
-CSS: `div-class`; `div_id`; `ComponentName`
+HTML & CSS: `div-class`; `div_id`; `ComponentName`
 
 Script: `functionVariableDataAndPropsName`; `parameter_and_field_name`
 

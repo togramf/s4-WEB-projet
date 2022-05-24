@@ -11,6 +11,11 @@
         props: {
             search: {type: String, required: true}
         },
+        watch: {
+            search: function(newSearch) {
+                localStorage.setItem("search", newSearch)
+            }
+        },
         methods: {
             cleanSearch: function() {
                 this.$emit("update:search", "")  
@@ -19,7 +24,6 @@
                 this.$emit("update:search", event.target.value)         
             }
         }
-
     }
 </script>
 

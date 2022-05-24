@@ -12,28 +12,33 @@
             <SortingOptions :gallerySortType.sync="gallerySortType"/>
             <SearchBar :search.sync="search"/>
             <label> Number of artworks to display: 
-                <input id="input_nb_artworks" type="number" value="40" min="10" max="100" step="5" @change="changeNumberArtworks">
+                <input id="input_nb_artworks" type="number" v-model="numberArtworks" min="10" max="100" step="5">
             </label>
-            
         </div>
+
+        <ArtworkDetailsCard id="artwork_details_card" :show.sync="showOverlay" :detailedArtworkData="detailedArtworkData"
+            />
+        
         <div class="artwork-gallery"> 
             <div v-for="artwork in artworksOrganizedData" :key="artwork.id" @click="moreInformation(artwork.id)">
-            <ArtworkCard
-            :title="artwork.title" 
-            :artist="artwork.artist_display" 
-            :date="artwork.date_display" 
-            :imageId="artwork.image_id"
-            :pictureUrl="artwork.image"/>
+                <ArtworkCard
+                    :title="artwork.title" 
+                    :artist="artwork.artist_display" 
+                    :date="artwork.date_display" 
+                    :imageId="artwork.image_id"
+                    :pictureUrl="artwork.image"/>
             </div> 
         </div> 
-        <div v-if="!search" class="gallery-footer">
-            <Pagination :currentPage="currentPage" @pagechanged="onPageChange"/>
+        
+        <div v-if="!search" class="gallery-pagination">
+            <Pagination :maxVisibleButtons="4" :currentPage="currentPage" @pagechanged="changePage"/>
         </div>
     </div>
 </template>
 
 <script>
     import ArtworkCard from './ArtworkCardComponent.vue'
+    import ArtworkDetailsCard from './ArtworkDetailsComponent.vue'
     import getArtworksData from '@/services/api/articAPI.js'
     import SearchBar from './SearchbarComponent.vue'
     import SortingOptions from './SortingOptionsComponent.vue'
@@ -43,6 +48,7 @@
         name: 'ArtworksGallery',
         components: {
             ArtworkCard,
+            ArtworkDetailsCard,
             SearchBar,
             SortingOptions,
             Pagination
@@ -63,7 +69,7 @@
 
                 const searchFuncTitle = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
                 const searchFuncArtist = (a) => a.artist_display.toLowerCase().includes(this.search.toLowerCase())
-                const filterFuncType = (a) => typeTitleList.includes(a.artworkType_title)
+                const filterFuncType = (a) => typeTitleList.includes(a.artwork_type_title)
 
                 const comparator = (field == "date_display")? (a,b) => {return a.date_start - b.date_start} : (a,b) => a[field].localeCompare(b[field])
                 
@@ -81,14 +87,22 @@
             return {
                 artworksData: [],
                 artworkTypesData: [],
-                search: "",
-                gallerySortType: "title",
+                search: localStorage.getItem("search") || "",
+                gallerySortType: localStorage.getItem("gallerySortType") || "title",
                 currentPage: 1,
-                numberArtworks: 40
+                numberArtworks: localStorage.getItem("numberArtworks") || 40,
+                showOverlay: false,
+                detailedArtworkData: []
             }
         },
         created: function() {
             this.retrieveArtworksData(this.currentPage, this.numberArtworks)
+        },
+        watch: {
+            numberArtworks: function(newNumberArtworks) {
+                localStorage.setItem("numberArtworks", newNumberArtworks)
+                this.retrieveArtworksData(this.currentPage, this.numberArtworks)
+            }
         },
         methods: {
             async retrieveArtworksData(page, nb_artworks) {
@@ -108,12 +122,7 @@
                     }
                 }
             },
-            changeNumberArtworks: function(){
-                // this.numberArtworks = localStorage.setItem("numberArtworks", document.getElementById("input_nb_artworks").value) 
-                this.numberArtworks = document.getElementById("input_nb_artworks").value
-                this.retrieveArtworksData(this.currentPage, this.numberArtworks)
-            },
-            onPageChange(page) {
+            changePage(page) {
                 this.currentPage = page;
                 this.retrieveArtworksData(this.currentPage, this.numberArtworks)
                 document.body.scrollTop = 0
@@ -125,18 +134,13 @@
                 }
             },
             async moreInformation(artwork_id)  {
-                const artworkData = await getArtworksData(artwork_id, 1)
-                console.log(artworkData)
+                this.detailedArtworkData = await getArtworksData(artwork_id, 1)
+                this.showOverlay = true;
             }, 
             print: function (value){
                 console.log(value)
             }         
         }
-        // watch: {
-        //     numberArtworks: function(newNumber) {
-        //         localStorage.setItem("numberArtworks", newNumber)
-        //     }
-        // }
     }
 
     
@@ -181,7 +185,7 @@
     justify-content: space-around;
 }
 
-.gallery-footer {
+.gallery-pagination {
     display: flex;
     flex-flow: row;
     justify-content: space-around;
