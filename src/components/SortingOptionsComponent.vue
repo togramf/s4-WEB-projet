@@ -1,5 +1,5 @@
 <template>
-    <div class="sorting_options">
+    <div class="sorting-options">
         <label for="artworks-sort"> Sort by: 
             <select :value="gallerySortType" @input="emitSortType" id="artworks-sort">
                 <option value="title"> By title </option>

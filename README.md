@@ -12,11 +12,13 @@
 - [x] sort the data from the API : separate 'search' and 'sort'
 - [x] change request ideas: change 'page'
 - [x] filter by types of artwork (checkboxes)
-- [ ] clean and separate the code 
+- [x] clean and separate the code 
+    - [x] clean up variable names
     - [x] searchbar
     - [x] sorting options
-    - [ ] filter buttons
-- [ ] localStorage
+    - [ ] filter buttons: problem to update the Array ArtworkTypesData
+    - [x] navigation buttons 
+- [ ] storage
     - [ ] search
     - [ ] sort type
     - [ ] nb_artworks 
@@ -24,16 +26,22 @@
 
 
 ## In Addition 
-- [ ] correct buttons to 'change page': arrows ? 
+- [x] correct buttons to 'change page': 
+    - arrows ? 
+        - [Arrow idea 1](https://codepen.io/xzf/pen/BvGLjL) ;
+        - [Arrow idea 2](https://codepen.io/shawnlooi/pen/eeXmrQ) ;
+        - [Arrow idea 3](https://codepen.io/cbrst/pen/ebxwLJ) ;
+        - [Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW) ;
+    - pagination buttons 
+        - [Pagination model](https://codepen.io/alligatorio/pen/zWvpRp) ;
 - [ ] more information about artworks on click ? 
 - [ ] correct footer 
 
-[Arrow idea 1](https://codepen.io/xzf/pen/BvGLjL) ;
-[Arrow idea 2](https://codepen.io/shawnlooi/pen/eeXmrQ) ;
-[Arrow idea 3](https://codepen.io/cbrst/pen/ebxwLJ) ;
-[Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW) ;
+## Naming consistency
 
-:search.sync="search"
+CSS: `div-class`; `div_id`; `ComponentName`
+
+Script: `functionVariableDataAndPropsName`; `parameter_and_field_name`
 
 ## Launch Project 
 ```

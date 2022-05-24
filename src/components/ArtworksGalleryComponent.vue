@@ -1,10 +1,10 @@
 <template>
     <div class="gallery">
         <div class="gallery-options">
-            <div v-if="!search" class = "artworks-type-filters"> 
+            <div v-if="!search" class = "filters-options"> 
                 <div id="checkboxes_list" >
-                    <label v-for='artwork_type in this.artworkTypesData' :key="artwork_type.type_title">
-                        <input type="checkbox" v-model="artwork_type.state" >{{artwork_type.type_title}}
+                    <label v-for='artworkType in this.artworkTypesData' :key="artworkType.type_title">
+                        <input type="checkbox" v-model="artworkType.state" >{{artworkType.type_title}}
                     </label>
                 </div>
                 <button id="uncheck_button" @click="cleanCheckboxes"> Uncheck All </button>
@@ -22,14 +22,12 @@
             :title="artwork.title" 
             :artist="artwork.artist_display" 
             :date="artwork.date_display" 
-            :image_id="artwork.image_id"
+            :imageId="artwork.image_id"
             :pictureUrl="artwork.image"/>
             </div> 
         </div> 
         <div v-if="!search" class="gallery-footer">
-            <button v-if="page>1" @click="changePage(-1)"> Precedent Page </button>
-            <div id="display_current_page"/>
-            <button @click="changePage(1)"> Next Page </button>
+            <Pagination :currentPage="currentPage" @pagechanged="onPageChange"/>
         </div>
     </div>
 </template>
@@ -39,31 +37,33 @@
     import getArtworksData from '@/services/api/articAPI.js'
     import SearchBar from './SearchbarComponent.vue'
     import SortingOptions from './SortingOptionsComponent.vue'
+    import Pagination from './PaginationComponent.vue'
 
     export default {
         name: 'ArtworksGallery',
         components: {
             ArtworkCard,
             SearchBar,
-            SortingOptions
+            SortingOptions,
+            Pagination
         },
         computed:{ 
             artworksOrganizedData: function(){
                 const field = this.gallerySortType 
                 let organizedData = this.artworksData
 
-                let type_title_list = []
-                this.artworkTypesData.forEach(artwork_type => {
-                    if (artwork_type.state == true)
-                        type_title_list.push(artwork_type.type_title); 
+                let typeTitleList = []
+                this.artworkTypesData.forEach(artworkType => {
+                    if (artworkType.state == true)
+                        typeTitleList.push(artworkType.type_title); 
                 });
                 
                 const search = this.search.length > 0 ? true : false
-                const checkbox = type_title_list.length > 0 ? true : false 
+                const checkbox = typeTitleList.length > 0 ? true : false 
 
                 const searchFuncTitle = (a) => a.title.toLowerCase().includes(this.search.toLowerCase())
                 const searchFuncArtist = (a) => a.artist_display.toLowerCase().includes(this.search.toLowerCase())
-                const filterFuncType = (a) => type_title_list.includes(a.artwork_type_title)
+                const filterFuncType = (a) => typeTitleList.includes(a.artworkType_title)
 
                 const comparator = (field == "date_display")? (a,b) => {return a.date_start - b.date_start} : (a,b) => a[field].localeCompare(b[field])
                 
@@ -83,16 +83,16 @@
                 artworkTypesData: [],
                 search: "",
                 gallerySortType: "title",
-                page: 1,
+                currentPage: 1,
                 numberArtworks: 40
             }
         },
         created: function() {
-            this.retrieveArtworksData(this.page, this.numberArtworks)
+            this.retrieveArtworksData(this.currentPage, this.numberArtworks)
         },
         methods: {
-            async retrieveArtworksData(page, nb_Artworks) {
-                this.artworksData = await getArtworksData(page, nb_Artworks)
+            async retrieveArtworksData(page, nb_artworks) {
+                this.artworksData = await getArtworksData(page, nb_artworks)
                 this.updateArtworkTypesData()
             },
             updateArtworkTypesData: function() {
@@ -100,25 +100,24 @@
                 let artworkTypesId = []
                 
                 for (let index=0; index<this.numberArtworks; index++){
-                    let type_id = this.artworksData[index].artwork_type_id           
+                    let typeId = this.artworksData[index].artwork_type_id           
 
-                    if (!artworkTypesId.includes(type_id)){
-                        this.artworkTypesData.push({type_id: type_id, type_title: this.artworksData[index].artwork_type_title, state: false})
-                        artworkTypesId.push(type_id)
+                    if (!artworkTypesId.includes(typeId)){
+                        this.artworkTypesData.push({type_id: typeId, type_title: this.artworksData[index].artwork_type_title, state: false})
+                        artworkTypesId.push(typeId)
                     }
                 }
             },
             changeNumberArtworks: function(){
                 // this.numberArtworks = localStorage.setItem("numberArtworks", document.getElementById("input_nb_artworks").value) 
                 this.numberArtworks = document.getElementById("input_nb_artworks").value
-                this.retrieveArtworksData(this.page, this.numberArtworks)
+                this.retrieveArtworksData(this.currentPage, this.numberArtworks)
             },
-            changePage: function(sens) {
-                this.page += sens
-                this.retrieveArtworksData(this.page, this.numberArtworks)
+            onPageChange(page) {
+                this.currentPage = page;
+                this.retrieveArtworksData(this.currentPage, this.numberArtworks)
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
-                document.getElementById("display_current_page").innerHTML = "Page "+this.page
             },
             cleanCheckboxes: function() {
                 for (let type in this.artworkTypesData) {
@@ -155,7 +154,7 @@
     color: #888888;
 }
 
-.artworks-type-filters {
+.filters-options {
     background-color: rgba(221, 221, 221, 0.479);
     border: 2px solid #888888;
     padding: .5vw;
@@ -202,12 +201,5 @@ input[type=number]::-webkit-inner-spin-button {
     border: 2px solid #888888;
     border-radius: 5%;
 }
-
-/* #reset_search_button {
-    font-weight: 600;
-    color: #888888;
-    border: 2px solid #888888;
-    border-radius: 30%;
-} */
 
 </style>
