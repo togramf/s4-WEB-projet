@@ -35,16 +35,16 @@ export default {
     width: 100%;
     background-color: #b10f0f;
     display: flex;
+    align-items: center;
   }
 
   header {
     flex-direction: row;
-    align-items: center;
     margin-bottom: 20px;
   }
 
   footer {
-    height: 10vh;
+    height: 5vh;
     margin-top: 20px;
     text-align:center ;
   }
@@ -54,6 +54,7 @@ export default {
     width: 50px;
     border-radius: 0%;
     background-color: aliceblue;
+    margin: 2px;
   }
 
   .page-title {

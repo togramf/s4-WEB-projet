@@ -10,8 +10,9 @@
             <p class="artwork-type">Type: {{detailedArtworkData.artwork_type_title}}</p>
             <p class="dimensions">Dimensions: {{detailedArtworkData.dimensions}}</p>
             <p class="medium-display">Medium: {{detailedArtworkData.medium_display}}</p>
-            <div> Category : 
-                <p class="category-title" v-for="category in detailedArtworkData.category_titles" :key="category">{{category}} </p>
+            <div class="category-title"> Category : 
+                <p v-for="category in detailedArtworkData.category_titles" :key="category"> {{category}} </p>
+                
             </div>
             <p class="place_of_origin">Origin: {{detailedArtworkData.place_of_origin}}</p>            
         </div>
@@ -39,23 +40,42 @@
         top:  2vh;
         left: 50%;
         transform: translateX(-50%);
+        
         display: grid;
-        /* width: 60vw; */
         width: 40vw;
         background-color: rgba(221, 221, 221, 0.826);
         border-radius: 5vw;
         margin-bottom: 5vh;
+
+        line-height: 1;
     }
 
     .artwork-details-card:hover {
-        box-shadow: 2px 2px 10px lightgrey;
+        box-shadow: 2px 2px 10px rgb(117, 117, 117);
     }
 
     .picture-details {
-        height: 40vh;
+        max-width: 39vw;
+        max-height: 40vh;
         position: relative;
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    .category-title {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    @media screen and (max-width: 1150px) {
+        .artwork-details-card {
+            width: 60vw;
+        }
+        .picture-details {
+            max-width: 59vw;
+        }
     }
 
 </style>

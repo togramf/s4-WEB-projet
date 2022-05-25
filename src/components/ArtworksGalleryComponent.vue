@@ -142,8 +142,6 @@
             }         
         }
     }
-
-    
 </script>
 
 <style>
@@ -172,7 +170,7 @@
 
 #checkboxes_list {
     max-height: 10vh;
-    width: 80vw;
+    width: 85vw;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

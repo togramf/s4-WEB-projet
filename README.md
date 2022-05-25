@@ -33,10 +33,12 @@
         - [Arrow idea 4](https://codepen.io/hakimel/pen/nOzqdW) ;
     - pagination buttons 
         - [Pagination model](https://codepen.io/alligatorio/pen/zWvpRp) ;
-- [ ] more information about artworks on click ? 
-- [ ] correct footer 
+- [x] more information about the artworks on click ? 
+- [x] correct footer 
 
 ## Naming consistency
+
+(I like to use multiple naming systems to make sure I'm using the right element, for example I name the variables I create in a function in a different way than the parameters requested as input)
 
 HTML & CSS: `div-class`; `div_id`; `ComponentName`
 
